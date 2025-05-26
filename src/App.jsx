@@ -13,7 +13,12 @@ import AdminSingle from "./pages/adminsingleuser/Single";
 import NewHotel from "./pages/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
 import { userInputs } from "./formSource";
-import { hotelColumns, roomColumns, userColumns } from "./datatablesource";
+import {
+  hotelColumns,
+  roomColumns,
+  userColumns,
+  bookingColumns,
+} from "./datatablesource";
 import { AuthContext } from "./context/AuthContext";
 // import { useContext } from "react";
 
@@ -75,7 +80,7 @@ function App() {
             }
           />
           <Route
-            path=":productId"
+            path=":hotelId"
             element={
               <ProtectedRoute>
                 <AdminSingle />
@@ -101,7 +106,7 @@ function App() {
             }
           />
           <Route
-            path=":productId"
+            path=":roomId"
             element={
               <ProtectedRoute>
                 <AdminSingle />
@@ -113,6 +118,16 @@ function App() {
             element={
               <ProtectedRoute>
                 <NewRoom />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+        <Route path="bookings">
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <AdminList columns={bookingColumns} />
               </ProtectedRoute>
             }
           />

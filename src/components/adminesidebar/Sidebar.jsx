@@ -52,10 +52,12 @@ function Sidebar() {
               <span>Rooms</span>
             </li>
           </Link>
-          <li>
-            <PersonOutlineIcon className="icon" />
-            <span>Manage Guests</span>
-          </li>
+          <Link to="/bookings">
+            <li>
+              <PersonOutlineIcon className="icon" />
+              <span>Booking Log</span>
+            </li>
+          </Link>
           <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />

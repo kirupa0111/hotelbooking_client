@@ -27,6 +27,7 @@
     "react-date-picker": "^11.0.0",
     "react-date-range": "^2.0.1",
     "react-dom": "^19.0.0",
+    "react-razorpay": "^3.0.1",
     "react-router-dom": "^7.4.1",
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.2",

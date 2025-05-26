@@ -4,14 +4,26 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import useFetch from "../../hooks/useFetch";
 import { useContext, useState } from "react";
 import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/instance";
-
+import PaymentButton from "../../components/paymentbutton/PaymentButton";
+import { useLocation } from "react-router-dom";
 const Reserve = ({ setOpen, hotelId }) => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const { data } = useFetch(`/hotels/room/${hotelId}`);
-  const { dates } = useContext(SearchContext);
 
+  const [amount, setAmount] = useState();
+
+  const { data } = useFetch(`/hotels/room/${hotelId}`);
+  console.log("Fetched data:", data);
+  const { dates } = useContext(SearchContext);
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(data);
+
+  const { hoteldata } = useFetch(`/hotels/find/${id}`);
+  console.log(hoteldata);
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -26,7 +38,18 @@ const Reserve = ({ setOpen, hotelId }) => {
     return dates;
   };
 
-  const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+  // Defensive check for dates[0], startDate, and endDate
+  let alldates = [];
+  if (
+    Array.isArray(dates) &&
+    dates.length > 0 &&
+    dates[0].startDate &&
+    dates[0].endDate
+  ) {
+    alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+  } else {
+    console.warn("dates[0], startDate, or endDate is undefined");
+  }
 
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) =>
@@ -36,9 +59,10 @@ const Reserve = ({ setOpen, hotelId }) => {
     return !isFound;
   };
 
-  const handleSelect = (e) => {
+  const handleSelect = (e, price) => {
     const checked = e.target.checked;
     const value = e.target.value;
+    setAmount(price);
     setSelectedRooms(
       checked
         ? [...selectedRooms, value]
@@ -49,6 +73,10 @@ const Reserve = ({ setOpen, hotelId }) => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
+    console.log(user); //null
+    console.log(hotelId);
+    console.log(selectedRooms); // selected room id
+    console.log(data); // room details 3 rooms
     try {
       await Promise.all(
         selectedRooms.map((roomId) => {
@@ -59,12 +87,15 @@ const Reserve = ({ setOpen, hotelId }) => {
         })
       );
       setOpen(false);
-      navigate("/");
+      // navigate("/");
+      navigate("/hotelslist", {
+        state: { user, hotelId, selectedRooms, data },
+      });
     } catch (err) {
       console.log(err);
     }
   };
-
+  console.log(amount);
   return (
     <div className="reserve">
       <div className="rContainer">
@@ -74,32 +105,56 @@ const Reserve = ({ setOpen, hotelId }) => {
           onClick={() => setOpen(false)}
         />
         <span>select your room:</span>
-        {data.map((item) => (
-          <div className="rItem">
-            <div className="rIteminfo">
-              <div className="rTitle">{item.title}</div>
-              <div className="rDesc">{item.desc}</div>
-              <div className="rMax">
-                Max People:<b>{item.maxPeople}</b>
+        {Array.isArray(data) ? (
+          data
+            .filter((item) => item !== null)
+
+            .map((item) => (
+              <div className="rItem" key={item._id}>
+                <div className="rIteminfo">
+                  <div className="rTitle">{item.title}</div>
+                  <div className="rDesc">{item.desc}</div>
+                  <div className="rMax">
+                    Max People:<b>{item.maxPeople}</b>
+                  </div>
+                  <div className="rPrice">{item.price}</div>
+                </div>
+                {Array.isArray(item.roomNumber) &&
+                item.roomNumber.length > 0 ? (
+                  item.roomNumber.map((roomNumber) => (
+                    <div className="room" key={roomNumber._id}>
+                      <label>{roomNumber.number}</label>
+                      <input
+                        type="checkbox"
+                        value={roomNumber._id}
+                        onChange={(e) => {
+                          handleSelect(e, item.price);
+                        }}
+                        disabled={!isAvailable(roomNumber)}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div>No rooms available</div>
+                )}
               </div>
-              <div className="rPrice">{item.price}</div>
-            </div>
-            {item.roomNumber.map((roomNumber) => (
-              <div className="room">
-                <label>{roomNumber.number}</label>
-                <input
-                  type="checkbox"
-                  value={roomNumber._id}
-                  onChange={handleSelect}
-                  disabled={!isAvailable(roomNumber)}
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-        <button onClick={handleClick} className="rButton">
+            ))
+        ) : (
+          <div>Loading...</div>
+        )}
+        {/* <button onClick={handleClick} className="rButton">
           Reserve Now!
-        </button>
+        </button> */}
+        <PaymentButton
+          amount={amount}
+          currency="INR"
+          selectedRooms={selectedRooms}
+          hotelId={hotelId}
+          user={user}
+          userId={user ? user._id : undefined}
+          data={data}
+          dates={dates}
+        />
       </div>
     </div>
   );

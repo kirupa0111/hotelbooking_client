@@ -101,3 +101,55 @@ export const roomColumns = [
     width: 100,
   },
 ];
+
+export const bookingColumns = [
+  { field: "_id", headerName: "ID", width: 70 },
+  {
+    field: "username",
+    headerName: "User Name",
+    width: 200,
+  },
+  {
+    field: "img",
+    headerName: "Image",
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <img
+            className="cellImg"
+            src={params.row.img || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"}
+            alt="avatar"
+          />
+          {params.row.username}
+        </div>
+      );
+    },
+  },
+
+  {
+    field: "checkIn",
+    headerName: "CheckIn",
+    width: 200,
+  },
+  {
+    field: "checkOut",
+    headerName: "CheckOut",
+    width: 200,
+  },
+  {
+    field: "hotelname",
+    headerName: "Hotel Name",
+    width: 200,
+  },
+  {
+    field: "amount",
+    headerName: "Amount",
+    width: 100,
+  },
+  {
+    field: "paymentStatus",
+    headerName: "Payment Status",
+    width: 200,
+  },
+];

@@ -12,24 +12,33 @@ const NewRoom = () => {
   const [info, setInfo] = useState({});
   const [hotelId, setHotelId] = useState(undefined);
   const [rooms, setRooms] = useState([]);
-
+  console.log(setRooms);
   const { data, loading } = useFetch("/hotels");
-
+  console.log("data", data);
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const roomNumbers = rooms.split(",").map((room) => ({ number: room }));
+    console.log("rooms", rooms);
+    const roomNumber = rooms
+      .split(",")
+      .map((room) => ({ number: Number(room.trim()) }));
+    console.log("roomNumber", roomNumber);
     try {
-      await axiosInstance.post(`/rooms/${hotelId}`, { ...info, roomNumbers });
+      console.log(info);
+      await axiosInstance.post(`/rooms/${hotelId}`, {
+        ...info,
+        roomNumber,
+        hotelId,
+      });
+      alert("Room added successfully");
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log(info);
   return (
     <div className="new">
       <AdminSidebar />

@@ -8,10 +8,14 @@ import { green } from "@mui/material/colors";
 // import { userColumns, roomColumns, hotelColumns } from "../../datatablesource";
 
 const Datatable = ({ columns }) => {
+  console.log(columns);
+
   const location = useLocation();
+
   console.log(location);
   const path = location.pathname.split("/")[1];
   console.log(path);
+  const resolvedType = path;
   const [list, setList] = useState();
 
   const { data } = useFetch(`/${path}`);
@@ -23,9 +27,24 @@ const Datatable = ({ columns }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/${path}/${id}`);
+      if (path === "rooms") {
+        // Find the room object to get its hotelId
+        const room = list.find((item) => item._id === id);
+        if (!room || !room.hotelId) {
+          alert("Hotel ID not found for this room.");
+          return;
+        }
+        await axiosInstance.delete(`/${path}/${id}/${room.hotelId}`);
+      } else {
+        await axiosInstance.delete(`/${path}/${id}`);
+      }
       setList(list.filter((item) => item._id !== id));
     } catch (error) {
+      if (error.response && error.response.status === 404) {
+        alert("Item not found. It may have already been deleted.");
+      } else {
+        alert("Failed to delete item. Please try again.");
+      }
       console.log(error);
     }
   };
@@ -36,6 +55,8 @@ const Datatable = ({ columns }) => {
       headerName: "Action",
       width: 200,
       renderCell: (params) => {
+        console.log(params);
+
         return (
           <div className="cellAction">
             <Link
@@ -66,7 +87,9 @@ const Datatable = ({ columns }) => {
       <DataGrid
         className="datagrid"
         rows={list}
-        columns={columns.concat(actionColumn)}
+        columns={
+          resolvedType === "booking" ? columns : columns.concat(actionColumn)
+        }
         // || []).concat(actionColumn)
         pageSize={9}
         rowsPerPageOptions={[9]}

@@ -26,8 +26,8 @@ const Hotel = () => {
   const [openModal, setOpenModal] = useState(false);
   const { data, loading } = useFetch(`/hotels/find/${id}`);
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
-  console.log(data);
+  console.log(user); // user details
+  console.log(data); // hotelID and name details
   const navigate = useNavigate();
 
   const { dates, options } = useContext(SearchContext);
@@ -38,9 +38,22 @@ const Hotel = () => {
     const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
     return diffDays;
   }
-  console.log(dayDifference(dates[0].endDate, dates[0].startDate));
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+
+  // Defensive check for dates[0], startDate, and endDate
+  let days = 0;
+  if (
+    Array.isArray(dates) &&
+    dates.length > 0 &&
+    dates[0].startDate &&
+    dates[0].endDate
+  ) {
+    days = dayDifference(dates[0].endDate, dates[0].startDate);
+    console.log(dayDifference(dates[0].endDate, dates[0].startDate));
+  } else {
+    console.warn("dates[0], startDate, or endDate is undefined");
+  }
   console.log(days);
+
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -141,7 +154,7 @@ const Hotel = () => {
                   <b>${days * data.cheapestPrice * options.room}</b> ({days}{" "}
                   nights)
                 </h2>
-                <button onClick={handleClick}>Reserve or Book Now!</button>
+                <button onClick={handleClick}>Select your room</button>
               </div>
             </div>
           </div>

@@ -25,6 +25,8 @@ const Login = () => {
       const res = await axiosInstance.post("/auth/login", credentials);
       if (res.data.isAdmin) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+        localStorage.setItem("access_token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.details));
         console.log(res.data.details);
         navigate("/adminhome");
       } else {

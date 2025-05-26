@@ -8,9 +8,15 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 // import { DarkModeContext } from "../../context/darkModeContext";
 // import { useContext } from "react";
-
+import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   // const { dispatch } = useContext(DarkModeContext);
+  const navigate = useNavigate();
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <div className="adminnavbar">
@@ -49,6 +55,7 @@ const Navbar = () => {
               src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
               alt=""
               className="avatar"
+              onClick={handleLogout}
             />
           </div>
         </div>

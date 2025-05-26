@@ -7,15 +7,14 @@ import { hotelInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import axiosInstance from "../../utils/instance";
 import React from "react";
-import { toast } from "react-toastify";
 import axios from "axios";
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   const [rooms, setRooms] = useState([]);
-
+  console.log(setRooms);
   const { data, loading } = useFetch("/rooms");
-
+  console.log(data);
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
@@ -29,7 +28,8 @@ const NewHotel = () => {
   };
   console.log(rooms);
   console.log(files);
-
+  console.log("hi");
+  console.log(info);
   const handleClick = async (e) => {
     e.preventDefault();
     try {
@@ -55,7 +55,7 @@ const NewHotel = () => {
       };
 
       await axiosInstance.post("/hotels", newhotel);
-      toast("data send successfully");
+      alert("data send successfully");
     } catch (err) {
       console.log(err);
     }

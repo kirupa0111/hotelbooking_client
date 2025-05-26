@@ -32,7 +32,8 @@ const Login = () => {
       // localStorage.setItem("username", JSON.stringify(res.data.username));
       navigate("/");
     } catch (err) {
-      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data.details });
+      dispatch({ type: "LOGIN_FAILURE", payload: err.response.message });
+      window.alert(err.response.data.message);
     }
   };
 
@@ -59,7 +60,7 @@ const Login = () => {
         </button>
         <Link to="/reg ">Go to Register</Link>
 
-        {error && <span>{error.message}</span>}
+        {error && <span>alert{error.message}</span>}
       </div>
     </div>
   );

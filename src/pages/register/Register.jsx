@@ -5,8 +5,10 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { useState } from "react";
 import axios from "axios";
 import axiosInstance from "../../utils/instance";
+import { useNavigate } from "react-router-dom";
 
 const New = ({ inputs }) => {
+  const navigate = useNavigate();
   const [file, setFile] = useState("");
   const [info, setInfo] = useState({});
 
@@ -31,6 +33,8 @@ const New = ({ inputs }) => {
       };
 
       await axiosInstance.post("/auth/register", newUser);
+      alert("User Created Successfully");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

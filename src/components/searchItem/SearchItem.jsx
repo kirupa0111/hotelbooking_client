@@ -1,6 +1,12 @@
 import "./searchItem.css";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { SearchContext } from "../../context/SearchContext";
 const SearchItem = ({ item }) => {
+  console.log(item); // hotelID and name details
+  const { dates, options } = useContext(SearchContext);
+  console.log(dates); //start date and end date
+  console.log(options); // adults, children, room
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />
@@ -29,7 +35,9 @@ const SearchItem = ({ item }) => {
           <spn className="siPrice">${item.cheapestPrice}</spn>
           <spn className="siTaxOp">Include taxes and fees</spn>
           <Link to={`/hotels/${item._id}`}>
-            <button className="siCheckButton">See Availability</button>
+            <button className="siCheckButton" dates={dates} options={options}>
+              See Availability
+            </button>
           </Link>
         </div>
       </span>
