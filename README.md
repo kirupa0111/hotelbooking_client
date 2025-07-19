@@ -1,12 +1,38 @@
-# React + Vite
+# 🏨 Hotel Booking Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the Hotel Booking Application – a full-stack web application designed to simplify hotel room reservations for users while providing hotel administrators with powerful tools to manage bookings, availability, and customer information.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔐 User Authentication (Admin & Regular Users)
+- 🛏️ Browse Available Rooms
+- 📅 Book Rooms with Date Selection
+- ✅ Booking Confirmation & History
+- 📊 Admin Dashboard for Booking Management
+- 🧾 View & Cancel Bookings
 
-## Expanding the ESLint configuration
+## 🧪 Demo Credentials
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Use the following demo accounts to log in and explore the application:
+
+### 🔧 Admin Account
+
+- **Username:** `kirupa`
+- **Password:** `123456`
+
+### 👤 User Account
+
+- **Username:** `kirupa`
+- **Password:** `123456`
+
+> ⚠️ **Note:** These accounts are for demonstration only. Do not use for real transactions. The data may reset frequently.
+
+## 🛠️ Tech Stack
+
+<Provide your actual stack here. Here's a generic example:>
+
+- **Frontend:** React.js / HTML / CSS / Bootstrap
+- **Backend:** Node.js / Express.js
+- **Database:** MongoDB
+- **Authentication:** JWT
+- **Hosting:** Netlify / Render / AWS
