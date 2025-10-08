@@ -63,7 +63,7 @@ const Datatable = ({ columns }) => {
               to="/users/test"
               style={{ textDecoration: "none", color: green }}
             >
-              <div className="viewButton">View</div>
+              {/* <div className="viewButton">View</div> */}
             </Link>
             <div
               className="deleteButton"

@@ -4,19 +4,48 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/instance";
 
 const Widget = ({ type }) => {
   let data;
   //temprory
-  const amount = 100;
-  const diff = 20;
+  //  const amount = 100;
+  // const diff = 20;
+  const [amount, setAmount] = useState(0);
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        if (type === "user") {
+          // Adjust endpoint as per your backend API
+          const res = await axiosInstance.get("/users/count");
+          console.log(res.data.count);
+          setAmount(res.data.count);
+        } else if (type === "bookings") {
+          const res = await axiosInstance.get("/bookings/count");
+          console.log(res.data.count);
+          setAmount(res.data.count);
+        } else if (type === "hotels") {
+          const res = await axiosInstance.get("/hotels/count");
+          console.log(res.data.count);
+          setAmount(res.data.count);
+        } else {
+          setAmount(0);
+        }
+      } catch (err) {
+        setAmount(0);
+      }
+    };
+
+    fetchCount();
+  }, [type]);
 
   switch (type) {
     case "user":
       data = {
         title: "USERS",
         isMoney: false,
-        link: "see all users",
+
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -28,11 +57,11 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "order":
+    case "bookings":
       data = {
-        title: "ORDERS",
+        title: "BOOKINGS",
         isMoney: false,
-        link: "view all orders",
+
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -44,11 +73,11 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "earnings":
+    case "hotels":
       data = {
-        title: "EARNINGS",
+        title: "HOTELS",
         isMoney: true,
-        link: "view net earnings",
+
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -57,23 +86,14 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "balance":
-      data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "see details",
-        icon: (
-          <AccountBalanceWalletOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(128, 0, 128, 0.2)",
-              color: "purple",
-            }}
-          />
-        ),
-      };
-      break;
+
     default:
+      data = {
+        title: "UNKNOWN",
+        isMoney: false,
+        icon: null,
+        link: "",
+      };
       break;
   }
   return (
@@ -88,7 +108,7 @@ const Widget = ({ type }) => {
       <div className="right">
         <div className="percentage">
           <KeyboardArrowUpIcon />
-          {diff}%
+          {/* {diff}% */}
         </div>
         {data.icon}
       </div>
