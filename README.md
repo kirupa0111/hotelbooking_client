@@ -17,12 +17,15 @@ Use the following demo accounts to log in and explore the application:
 
 ### 🔧 Admin Account
 
-- **Username:** `kirupa`
+- **Username:** `dinesh`
 - **Password:** `123456`
 
 ### 👤 User Account
 
-- **Username:** `kirupa`
+- **Username:** `diana`
+- **Password:** `123456`
+
+- **Username:** `arun`
 - **Password:** `123456`
 
 > ⚠️ **Note:** These accounts are for demonstration only. Do not use for real transactions. The data may reset frequently.
